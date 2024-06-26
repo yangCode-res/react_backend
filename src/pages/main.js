@@ -4,7 +4,9 @@ import { Outlet } from 'react-router-dom';
 import { Button, Layout, theme } from 'antd';
 import CommonAside from '../components/commonAsid';
 import CommonHeader from '../components/commonHeader';
+import CommonTag  from '../components/commanTag';
 import {useSelector} from 'react-redux'
+import { RouterAuth } from '../router/routerAuth';
 const { Header, Content } = Layout;
 
 const Main=()=>{
@@ -14,10 +16,12 @@ const Main=()=>{
   //获取展开收起的状态
   const collapsed=useSelector(state=>state.tab.isCollapse)
   return (
-    <Layout className='main-container '>
+    <RouterAuth>
+      <Layout className='main-container '>
       <CommonAside collapsed={collapsed}/>
       <Layout>
        <CommonHeader collapsed={collapsed} />
+       <CommonTag/>
         <Content
           style={{
             margin: '24px 16px',
@@ -31,6 +35,8 @@ const Main=()=>{
         </Content>
       </Layout>
     </Layout>
+    </RouterAuth>
+    
   );
 }
 export default Main

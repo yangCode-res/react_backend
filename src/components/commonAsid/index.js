@@ -2,6 +2,9 @@ import * as Icons from '@ant-design/icons';
 import { Button, Layout, Menu, theme } from 'antd';
 import MenuConfig from "../../config"
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import {useDispatch} from 'react-redux'
+import {selectMenuList} from "../../store/reducers/tab"
 const { Header, Sider, Content } = Layout;
 //动态获取icon组建
 const icon2Element = (name) => React.createElement(Icons[name])
@@ -26,6 +29,33 @@ const items = MenuConfig.map(item => {
 })
 
 const CommonAside = ({collapsed}) => {
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
+  //添加数据到store
+  const settabList=(val)=>{
+    dispatch(selectMenuList(val))
+  }
+  const selectMenu=(e)=>{
+    console.log(e);
+    let data
+    MenuConfig.forEach(item=>{
+      if(item.path===e.keyPath[e.keyPath.length -1]){
+        data=item
+        if(e.keyPath.length>1){
+          data=item.children.find(child=>{
+            return child.path==e.key
+          })
+        }
+      }
+    })
+    settabList({
+      path:data.path,
+      name:data.name,
+      label:data.label
+      
+    })
+    navigate(e.key)
+  }
   console.log("collapsed",collapsed);
   return (
     <Sider trigger={null} collapsed={collapsed} >
@@ -35,6 +65,7 @@ const CommonAside = ({collapsed}) => {
         mode="inline"
         defaultSelectedKeys={['1']}
         items={items}
+        onClick={selectMenu}
       />
     </Sider>
   )

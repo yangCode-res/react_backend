@@ -6,10 +6,14 @@ import {
 } from '@ant-design/icons';
 import { UseDispatch, useDispatch } from "react-redux";
 import {collapseMenu} from "../../store/reducers/tab"
+import { useNavigate } from "react-router-dom";
 const { Header } = Layout;
 
 const CommonHeader = ({collapsed}) => {
+    const navigate=useNavigate()
     const logout = () => {
+            localStorage.removeItem("token")
+            navigate('/login')
 
     }
     const items = [
@@ -24,7 +28,7 @@ const CommonHeader = ({collapsed}) => {
         {
             key: '2',
             label: (
-                <a target="_blank" rel="noopener noreferrer" onClick={() => logout}>
+                <a target="_blank" rel="noopener noreferrer" onClick={() => logout()}>
                     退出
                 </a>
             )
